@@ -1,0 +1,17 @@
+.list-item {
+  width: 100%;
+}
+
+.list-item-title {
+  font-weight: 600;
+  font-family: "Montserrat", sans-serif;
+}
+
+.list-item-artist {
+  font-weight: 500;
+  font-family: "Montserrat", sans-serif;
+}
+
+.list-item-release-date {
+  font-family: "Montserrat", sans-serif;
+}
