@@ -4,11 +4,7 @@ import {
   spotifyTokenResponse,
 } from "../auth/atoms";
 
-export const keysAbleToSave = [
-  "spotifyRefreshToken",
-  "spotifyTokenResponse",
-  "isAuthenticated",
-];
+import { keysAbleToSave } from "../../components/debug-observer";
 
 const atomsToSave = [
   {
