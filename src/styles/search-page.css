@@ -81,6 +81,10 @@
   font-family: "Montserrat", sans-serif;
 }
 
+.pagination-btn {
+  margin: 2rem !important;
+}
+
 @media (min-width: 729px) {
   .search-page h2 {
     font-size: 3rem;

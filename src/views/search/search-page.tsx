@@ -1,30 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { FormEvent, useState } from "react";
 import { useRecoilState } from "recoil";
 import Button from "react-bootstrap/Button";
 // recoil
-import { spotifyResult } from "../../recoil/songs/atoms";
 import { filterType as filterTypeSelector } from "../../recoil/songs/selectors";
 import { spotifyTokenResponse } from "../../recoil/auth/atoms";
-// assets
-import BannerSpotify from "../../assets/img/spotify-header.png";
+
 // components
 import Filters from "../../components/filters/search-filters";
 import Track from "../../components/track";
 import Album from "../../components/album";
 import Artist from "../../components/artist";
 import Playlist from "../../components/playlist";
+import Loading from "../../components/loading";
 // utils
 import { spotifySearchCall } from "../../utils";
 // styles
 import "../../styles/search-page.css";
+// interfaces
+import { SpotifySearchResponse } from "../../interfaces/spotify-search-response.interface";
 
 export default function SearchPage() {
   const [searchText, setSearchText] = useState("");
   const [tokenResponse] = useRecoilState(spotifyTokenResponse);
-  const [searchResponse, setSearchResponse] = useRecoilState(spotifyResult);
   const [filterType] = useRecoilState(filterTypeSelector);
+  const [tracksData, setTracksData] = useState<SpotifySearchResponse>();
+  const [artistsData, setArtistsData] = useState<SpotifySearchResponse>();
+  const [playlistsData, setPlaylistsData] = useState<SpotifySearchResponse>();
+  const [albumsData, setAlbumsData] = useState<SpotifySearchResponse>();
+  const [loading, setLoading] = useState(false);
 
-  const handleSearchClick = async ({ next, previous }: any) => {
+  const handleSearch = async (e: FormEvent) => {
+    e.preventDefault();
+
+    setLoading(true);
+
     let type = filterType ?? "track";
     const paramsArray = [
       {
@@ -32,9 +41,6 @@ export default function SearchPage() {
       },
       {
         type,
-      },
-      {
-        offset: 12,
       },
       {
         limit: 12,
@@ -51,75 +57,153 @@ export default function SearchPage() {
       paramsArray,
       tokenResponse.access_token
     );
-    setSearchResponse(response);
-    console.log("sadsad", response);
+
+    if (response) {
+      setAlbumsData(response.albums);
+      setArtistsData(response.artists);
+      setPlaylistsData(response.playlists);
+      setTracksData(response.tracks);
+    }
+    setLoading(false);
+    console.log("res", response);
   };
+
+  async function loadMoreData(
+    dataSource: SpotifySearchResponse,
+    stateKey: string
+  ): Promise<void> {
+    try {
+      if (!dataSource.next) {
+        return;
+      }
+
+      const response = await fetch(dataSource.next, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${tokenResponse.access_token}`,
+        },
+      });
+
+      const body = await response.json();
+
+      switch (stateKey) {
+        case "albums":
+          setAlbumsData({
+            ...body.albums,
+            items: [...(albumsData?.items || []), ...body.albums.items],
+          });
+          break;
+        case "tracks":
+          setTracksData({
+            ...body.tracks,
+            items: [...(tracksData?.items || []), ...body.tracks.items],
+          });
+          break;
+        case "playlists":
+          setPlaylistsData({
+            ...body.playlists,
+            items: [...(playlistsData?.items || []), ...body.playlists.items],
+          });
+          break;
+        case "artists":
+          setArtistsData({
+            ...body.artists,
+            items: [...(artistsData?.items || []), ...body.artists.items],
+          });
+          break;
+        default:
+          break;
+      }
+    } catch (e) {
+      throw {
+        message: "Error 404 NOT FOUND",
+      };
+    }
+  }
 
   return (
     <div className="search-page">
-      <div
-        className="banner-search-page container-fluid"
-        style={{ backgroundImage: `url(${BannerSpotify})` }}
-      ></div>
       <h2>Busca tu cancion favorita</h2>
-      <div className="searchbox">
+      <form className="searchbox" onSubmit={handleSearch}>
         <input
           type="text"
           className="searchbox-input"
           value={searchText}
           onChange={({ target: { value } }) => setSearchText(value)}
         />
-        <Button
-          variant="success"
-          className="search-btn"
-          onClick={handleSearchClick}
-        >
-          Buscar
+        <Button variant="success" className="search-btn" type="submit">
+          Search
         </Button>
-      </div>
+      </form>
       <Filters />
 
-      {searchResponse?.tracks?.items && (
+      {loading && <Loading />}
+
+      {tracksData?.items && (
         <div className="home-tracks-container ">
           <p className="home-tracks-title">Canciones</p>
           <div className="home-tracks-container-items row">
-            {searchResponse?.tracks?.items?.map((item: any, index: any) => (
+            {tracksData?.items?.map((item: any, index: any) => (
               <Track key={index} {...item} />
             ))}
           </div>
+          <Button
+            className="pagination-btn"
+            onClick={() => loadMoreData(tracksData, "tracks")}
+          >
+            Cargar más canciones
+          </Button>
         </div>
       )}
 
-      {searchResponse?.albums?.items && (
+      {albumsData?.items && (
         <div className="home-albums-container">
           <p className="home-albums-title">Album</p>
           <div className="home-albums-container-items row">
-            {searchResponse?.albums?.items?.map((item: any, index: any) => (
+            {albumsData?.items?.map((item: any, index: any) => (
               <Album key={index} {...item} />
             ))}
           </div>
+          <Button
+            className="pagination-btn"
+            onClick={() => loadMoreData(albumsData, "albums")}
+          >
+            Cargar más álbumes
+          </Button>
         </div>
       )}
 
-      {searchResponse?.artists?.items && (
+      {artistsData?.items && (
         <div className="home-artists-container">
           <p className="home-artists-title">Artista</p>
           <div className="home-artist-container-items row">
-            {searchResponse?.artists?.items?.map((item: any, index: any) => (
+            {artistsData?.items?.map((item: any, index: any) => (
               <Artist key={index} {...item} />
             ))}
           </div>
+          <Button
+            className="pagination-btn"
+            onClick={() => loadMoreData(artistsData, "artists")}
+          >
+            Cargar más artistas
+          </Button>
         </div>
       )}
 
-      {searchResponse?.playlists?.items && (
+      {playlistsData?.items && (
         <div className="home-playlists-container">
           <p className="home-playlists-title">Playlists</p>
           <div className="home-playlists-container-items row">
-            {searchResponse?.playlists?.items?.map((item: any, index: any) => (
+            {playlistsData?.items?.map((item: any, index: any) => (
               <Playlist key={index} {...item} />
             ))}
           </div>
+          <Button
+            className="pagination-btn"
+            onClick={() => loadMoreData(playlistsData, "playlists")}
+          >
+            Cargar más playlists
+          </Button>
         </div>
       )}
     </div>

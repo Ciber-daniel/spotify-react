@@ -50,7 +50,7 @@ export default function Home(): JSX.Element {
           setSpotifyTokenResponse(response);
           setIsAuthenticated(true);
 
-          history.replace("/search/songs");
+          history.replace("/app/search/songs");
         } else {
           throw new Error("Usuario no fue logeado");
         }
