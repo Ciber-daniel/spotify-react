@@ -6,7 +6,7 @@ import {
   playlist as playlistAtom,
 } from "../../recoil/songs/atoms";
 // styles
-import "../../styles/filters.css";
+import "../../styles/search-page.css";
 
 export default function Filters() {
   const [album, setAlbum] = useRecoilState(albumAtom);

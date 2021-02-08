@@ -1,17 +1,63 @@
 .list-item {
-  width: 100%;
+  width: 20rem;
 }
 
 .list-item-title {
-  font-weight: 600;
+  font-size: 0.8rem;
+  font-weight: 900;
   font-family: "Montserrat", sans-serif;
 }
 
 .list-item-artist {
+  font-size: 0.9rem;
   font-weight: 500;
   font-family: "Montserrat", sans-serif;
 }
 
 .list-item-release-date {
   font-family: "Montserrat", sans-serif;
+}
+
+@media (min-width: 729px) {
+  .list-item {
+    width: 100%;
+    height: 20rem;
+  }
+
+  .list-item-title {
+    font-size: 0.7rem;
+  }
+
+  .list-item-artist {
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 968px) {
+  .list-item {
+    width: 100%;
+    height: 25rem;
+  }
+
+  .list-item-title {
+    font-size: 0.8rem;
+  }
+
+  .list-item-artist {
+    font-size: 1rem;
+  }
+}
+@media (min-width: 1278px) {
+  .list-item {
+    width: 100%;
+    height: 25rem;
+  }
+
+  .list-item-title {
+    font-size: 0.8rem;
+  }
+
+  .list-item-artist {
+    font-size: 1rem;
+  }
 }

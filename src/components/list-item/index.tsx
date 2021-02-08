@@ -16,11 +16,7 @@ export default memo(function ListItem({
 
   return (
     <div className="col-md-3 p-4 container-fluid">
-      <div
-        className="list-item card card-body"
-        onClick={handleListItemClick}
-        style={{ height: "30rem", marginBottom: "8%" }}
-      >
+      <div className="list-item card card-body" onClick={handleListItemClick}>
         <img
           className="list-img d-flex justify-content-between"
           src={imageUrl}

@@ -74,7 +74,7 @@ export default function SearchPage() {
           className="search-btn"
           onClick={handleSearchClick}
         >
-          Success
+          Buscar
         </Button>
       </div>
       <Filters />

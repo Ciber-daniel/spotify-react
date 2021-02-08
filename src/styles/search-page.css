@@ -1,3 +1,5 @@
+/*first mobile*/
+
 .banner-search-page {
   width: 100%;
   height: 18rem;
@@ -15,17 +17,17 @@
 
 .search-page h2 {
   padding-top: 2rem;
-  font-size: 3rem;
+  font-size: 1.5rem;
   font-family: "Montserrat", sans-serif;
   font-weight: 400;
-  padding-bottom: 1%;
+  padding-bottom: 5%;
 }
 
 .searchbox {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  width: 40%;
+  width: 100%;
 }
 
 .searchbox .searchbox-input {
@@ -36,7 +38,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 7rem;
+  width: 5rem;
   height: 2rem;
   cursor: pointer;
 }
@@ -45,11 +47,28 @@
   outline: none;
 }
 
+.search-filters {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-left: 5%;
+  margin-top: 5%;
+  width: 100%;
+}
+
+.search-filters label {
+  font-family: "Montserrat", sans-serif;
+}
+
 .home-tracks-container,
 .home-albums-container,
 .home-artists-container,
 .home-playlists-container {
-  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 70%;
 }
 
 .home-tracks-title,
@@ -60,4 +79,105 @@
   font-size: 2rem;
   font-weight: 500;
   font-family: "Montserrat", sans-serif;
+}
+
+@media (min-width: 729px) {
+  .search-page h2 {
+    font-size: 3rem;
+    padding-bottom: 2%;
+  }
+
+  .searchbox {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: 80%;
+  }
+
+  .searchbox .searchbox-input {
+    width: 70%;
+  }
+
+  .searchbox .search-btn {
+    width: 7rem;
+    height: 2rem;
+    cursor: pointer;
+  }
+
+  .search-filters {
+    margin-top: 4%;
+    width: 60%;
+  }
+
+  .home-tracks-container,
+  .home-albums-container,
+  .home-artists-container,
+  .home-playlists-container {
+    width: 90%;
+  }
+
+  .home-tracks-title,
+  .home-albums-title,
+  .home-artists-title,
+  .home-playlists-title {
+    padding-top: 2rem;
+  }
+}
+
+@media (min-width: 968px) {
+  .searchbox {
+    width: 60%;
+  }
+
+  .searchbox .searchbox-input {
+    width: 60%;
+  }
+
+  .search-filters {
+    margin-top: 4%;
+    width: 50%;
+  }
+
+  .home-tracks-container,
+  .home-albums-container,
+  .home-artists-container,
+  .home-playlists-container {
+    width: 80%;
+  }
+
+  .home-tracks-title,
+  .home-albums-title,
+  .home-artists-title,
+  .home-playlists-title {
+    padding-top: 1rem;
+  }
+}
+
+@media (min-width: 1278px) {
+  .searchbox {
+    width: 40%;
+  }
+
+  .searchbox .searchbox-input {
+    width: 25rem;
+  }
+
+  .search-filters {
+    margin-top: 3%;
+    width: 30%;
+  }
+
+  .home-tracks-container,
+  .home-albums-container,
+  .home-artists-container,
+  .home-playlists-container {
+    width: 80%;
+  }
+
+  .home-tracks-title,
+  .home-albums-title,
+  .home-artists-title,
+  .home-playlists-title {
+    padding-top: 1rem;
+  }
 }
