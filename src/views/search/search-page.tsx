@@ -1,26 +1,25 @@
-import React, { FormEvent, useState } from "react";
-import { useRecoilState } from "recoil";
-import Button from "react-bootstrap/Button";
-// recoil
-import { filterType as filterTypeSelector } from "../../recoil/songs/selectors";
-import { spotifyTokenResponse } from "../../recoil/auth/atoms";
-
+import React, { FormEvent, useState } from 'react';
+import Button from 'react-bootstrap/Button';
+import { useRecoilState } from 'recoil';
+import Album from '../../components/album';
+import Artist from '../../components/artist';
 // components
-import Filters from "../../components/filters/search-filters";
-import Track from "../../components/track";
-import Album from "../../components/album";
-import Artist from "../../components/artist";
-import Playlist from "../../components/playlist";
-import Loading from "../../components/loading";
-// utils
-import { spotifySearchCall } from "../../utils";
-// styles
-import "../../styles/search-page.css";
+import Filters from '../../components/filters/search-filters';
+import Loading from '../../components/loading';
+import Playlist from '../../components/playlist';
+import Track from '../../components/track';
 // interfaces
-import { SpotifySearchResponse } from "../../interfaces/spotify-search-response.interface";
+import { SpotifySearchResponse } from '../../interfaces/spotify-search-response.interface';
+import { spotifyTokenResponse } from '../../recoil/auth/atoms';
+// recoil
+import { filterType as filterTypeSelector } from '../../recoil/songs/selectors';
+// styles
+import '../../styles/search-page.css';
+// utils
+import { spotifySearchCall } from '../../utils';
 
 export default function SearchPage() {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState('');
   const [tokenResponse] = useRecoilState(spotifyTokenResponse);
   const [filterType] = useRecoilState(filterTypeSelector);
   const [tracksData, setTracksData] = useState<SpotifySearchResponse>();
@@ -34,7 +33,7 @@ export default function SearchPage() {
 
     setLoading(true);
 
-    let type = filterType ?? "track";
+    let type = filterType ?? 'track';
     const paramsArray = [
       {
         q: searchText,
@@ -46,10 +45,10 @@ export default function SearchPage() {
         limit: 12,
       },
       {
-        next: "",
+        next: '',
       },
       {
-        previous: "",
+        previous: '',
       },
     ];
 
@@ -65,7 +64,7 @@ export default function SearchPage() {
       setTracksData(response.tracks);
     }
     setLoading(false);
-    console.log("res", response);
+    console.log('res', response);
   };
 
   async function loadMoreData(
@@ -78,7 +77,7 @@ export default function SearchPage() {
       }
 
       const response = await fetch(dataSource.next, {
-        method: "GET",
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${tokenResponse.access_token}`,
         },
@@ -87,25 +86,25 @@ export default function SearchPage() {
       const body = await response.json();
 
       switch (stateKey) {
-        case "albums":
+        case 'albums':
           setAlbumsData({
             ...body.albums,
             items: [...(albumsData?.items || []), ...body.albums.items],
           });
           break;
-        case "tracks":
+        case 'tracks':
           setTracksData({
             ...body.tracks,
             items: [...(tracksData?.items || []), ...body.tracks.items],
           });
           break;
-        case "playlists":
+        case 'playlists':
           setPlaylistsData({
             ...body.playlists,
             items: [...(playlistsData?.items || []), ...body.playlists.items],
           });
           break;
-        case "artists":
+        case 'artists':
           setArtistsData({
             ...body.artists,
             items: [...(artistsData?.items || []), ...body.artists.items],
@@ -115,9 +114,7 @@ export default function SearchPage() {
           break;
       }
     } catch (e) {
-      throw {
-        message: "Error 404 NOT FOUND",
-      };
+      throw new Error('Error 404 NOT FOUND');
     }
   }
 
@@ -149,7 +146,7 @@ export default function SearchPage() {
           </div>
           <Button
             className="pagination-btn"
-            onClick={() => loadMoreData(tracksData, "tracks")}
+            onClick={() => loadMoreData(tracksData, 'tracks')}
           >
             Cargar más canciones
           </Button>
@@ -166,7 +163,7 @@ export default function SearchPage() {
           </div>
           <Button
             className="pagination-btn"
-            onClick={() => loadMoreData(albumsData, "albums")}
+            onClick={() => loadMoreData(albumsData, 'albums')}
           >
             Cargar más álbumes
           </Button>
@@ -183,7 +180,7 @@ export default function SearchPage() {
           </div>
           <Button
             className="pagination-btn"
-            onClick={() => loadMoreData(artistsData, "artists")}
+            onClick={() => loadMoreData(artistsData, 'artists')}
           >
             Cargar más artistas
           </Button>
@@ -200,7 +197,7 @@ export default function SearchPage() {
           </div>
           <Button
             className="pagination-btn"
-            onClick={() => loadMoreData(playlistsData, "playlists")}
+            onClick={() => loadMoreData(playlistsData, 'playlists')}
           >
             Cargar más playlists
           </Button>

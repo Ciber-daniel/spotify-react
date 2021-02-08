@@ -1,8 +1,7 @@
-import { memo } from "react";
-import { useHistory } from "react-router-dom";
+import { memo } from 'react';
+import { useHistory } from 'react-router-dom';
 // styles
-import "../../styles/list-item.css";
-import { Items } from "../../interfaces/spotify-search-response.interface";
+import '../../styles/list-item.css';
 
 export default memo(function ListItem({
   imageUrl,
@@ -14,7 +13,7 @@ export default memo(function ListItem({
   const history = useHistory();
 
   const handleListItemClick = () => {
-    history.push(`/app/detail/${id}`, "_blank");
+    history.push(`/app/detail/${id}`, '_blank');
   };
 
   return (
