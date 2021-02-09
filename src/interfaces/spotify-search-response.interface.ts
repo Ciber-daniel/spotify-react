@@ -8,14 +8,29 @@ export interface SpotifySearchResponse {
   total: number;
 }
 
-export interface Items {
-  album: any | {};
-  artists: any | {};
+export interface Artist {
+  id: string;
+  name: string;
+  type: string;
+}
+
+export interface Album {
+  album_type: string;
+  artists: Artist[];
+  id: string;
+  images: string[];
+  name: string;
+  total_tracks: number;
+  external_urls: string;
+}
+
+export interface Track {
+  album: any | Album;
+  artists: any | Artist[];
   available_markets: string[];
   artist: string;
   releaseDate: string;
   release_date: string;
-  imageUrl: string;
   externalUrl: string;
   disc_number: number;
   duration_ms: number;

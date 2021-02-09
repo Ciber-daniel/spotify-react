@@ -1,6 +1,6 @@
-import { memo, useState } from "react";
+import { memo } from "react";
 import ListItem from "./list-item/index";
-import { Items } from "../interfaces/spotify-search-response.interface";
+
 export default memo(function Track({
   album,
   id,

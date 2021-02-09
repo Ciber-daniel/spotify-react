@@ -1,7 +1,10 @@
 import React from "react";
 import { RouteComponentProps, BrowserRouter as Router } from "react-router-dom";
+// components
 import SearchDetail from "../../components/list-item/search-detail";
+// viewa
 import SearchPage from "../../views/search/search-page";
+// routes
 import PrivateRoute from "../private-route";
 // assets
 import BannerSpotify from "../../assets/img/spotify-header.png";

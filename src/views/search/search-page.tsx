@@ -1,32 +1,23 @@
 import React, { FormEvent, useState } from "react";
-import { useRecoilState } from "recoil";
 import Button from "react-bootstrap/Button";
-// recoil
-import { filterType as filterTypeSelector } from "../../recoil/songs/selectors";
-import { spotifyTokenResponse } from "../../recoil/auth/atoms";
-
+import { useRecoilState } from "recoil";
 // components
-import Filters from "../../components/filters/search-filters";
-import Track from "../../components/track";
-import Album from "../../components/album";
-import Artist from "../../components/artist";
-import Playlist from "../../components/playlist";
 import Loading from "../../components/loading";
-// utils
-import { spotifySearchCall } from "../../utils";
-// styles
-import "../../styles/search-page.css";
+import Track from "../../components/track";
 // interfaces
 import { SpotifySearchResponse } from "../../interfaces/spotify-search-response.interface";
+// recoil
+import { spotifyTokenResponse } from "../../recoil/auth/atoms";
+// styles
+import "../../styles/search-page.css";
+// utils
+import { spotifySearchCall } from "../../utils";
 
 export default function SearchPage() {
   const [searchText, setSearchText] = useState("");
   const [tokenResponse] = useRecoilState(spotifyTokenResponse);
-  const [filterType] = useRecoilState(filterTypeSelector);
+  const [filterType] = useState();
   const [tracksData, setTracksData] = useState<SpotifySearchResponse>();
-  const [artistsData, setArtistsData] = useState<SpotifySearchResponse>();
-  const [playlistsData, setPlaylistsData] = useState<SpotifySearchResponse>();
-  const [albumsData, setAlbumsData] = useState<SpotifySearchResponse>();
   const [loading, setLoading] = useState(false);
 
   const handleSearch = async (e: FormEvent) => {
@@ -59,9 +50,6 @@ export default function SearchPage() {
     );
 
     if (response) {
-      setAlbumsData(response.albums);
-      setArtistsData(response.artists);
-      setPlaylistsData(response.playlists);
       setTracksData(response.tracks);
     }
     setLoading(false);
@@ -87,37 +75,17 @@ export default function SearchPage() {
       const body = await response.json();
 
       switch (stateKey) {
-        case "albums":
-          setAlbumsData({
-            ...body.albums,
-            items: [...(albumsData?.items || []), ...body.albums.items],
-          });
-          break;
         case "tracks":
           setTracksData({
             ...body.tracks,
             items: [...(tracksData?.items || []), ...body.tracks.items],
           });
           break;
-        case "playlists":
-          setPlaylistsData({
-            ...body.playlists,
-            items: [...(playlistsData?.items || []), ...body.playlists.items],
-          });
-          break;
-        case "artists":
-          setArtistsData({
-            ...body.artists,
-            items: [...(artistsData?.items || []), ...body.artists.items],
-          });
-          break;
         default:
           break;
       }
     } catch (e) {
-      throw {
-        message: "Error 404 NOT FOUND",
-      };
+      throw new Error("Error 404 NOT FOUND");
     }
   }
 
@@ -135,7 +103,6 @@ export default function SearchPage() {
           Search
         </Button>
       </form>
-      <Filters />
 
       {loading && <Loading />}
 
@@ -152,57 +119,6 @@ export default function SearchPage() {
             onClick={() => loadMoreData(tracksData, "tracks")}
           >
             Cargar más canciones
-          </Button>
-        </div>
-      )}
-
-      {albumsData?.items && (
-        <div className="home-albums-container">
-          <p className="home-albums-title">Album</p>
-          <div className="home-albums-container-items row">
-            {albumsData?.items?.map((item: any, index: any) => (
-              <Album key={index} {...item} />
-            ))}
-          </div>
-          <Button
-            className="pagination-btn"
-            onClick={() => loadMoreData(albumsData, "albums")}
-          >
-            Cargar más álbumes
-          </Button>
-        </div>
-      )}
-
-      {artistsData?.items && (
-        <div className="home-artists-container">
-          <p className="home-artists-title">Artista</p>
-          <div className="home-artist-container-items row">
-            {artistsData?.items?.map((item: any, index: any) => (
-              <Artist key={index} {...item} />
-            ))}
-          </div>
-          <Button
-            className="pagination-btn"
-            onClick={() => loadMoreData(artistsData, "artists")}
-          >
-            Cargar más artistas
-          </Button>
-        </div>
-      )}
-
-      {playlistsData?.items && (
-        <div className="home-playlists-container">
-          <p className="home-playlists-title">Playlists</p>
-          <div className="home-playlists-container-items row">
-            {playlistsData?.items?.map((item: any, index: any) => (
-              <Playlist key={index} {...item} />
-            ))}
-          </div>
-          <Button
-            className="pagination-btn"
-            onClick={() => loadMoreData(playlistsData, "playlists")}
-          >
-            Cargar más playlists
           </Button>
         </div>
       )}

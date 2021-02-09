@@ -1,20 +1,20 @@
-import React, { useEffect, useCallback } from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import Button from "react-bootstrap/Button";
+import React, { useCallback, useEffect } from 'react';
+import Button from 'react-bootstrap/Button';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+// api
+import { spotifyUrl } from '../../api/api-login-spotify';
+// assets
+import homeImage from '../../assets/img/backgroundHome.png';
 // recoil
 import {
   isAuthenticated as isAuthenticatedAtom,
   spotifyRefreshToken as spotifyRefreshTokenAtom,
   spotifyTokenResponse as spotifyTokenResponseAtom,
-} from "../../recoil/auth/atoms";
-import "../../styles/home.css";
+} from '../../recoil/auth/atoms';
+import '../../styles/home.css';
 // utils
-import { spotifyAuthCall } from "../../utils";
-// api
-import { spotifyUrl } from "../../api/api-login-spotify";
-// assets
-import homeImage from "../../assets/img/backgroundHome.png";
+import { spotifyAuthCall } from '../../utils';
 
 export default function Home(): JSX.Element {
   const location = useLocation();
@@ -37,12 +37,12 @@ export default function Home(): JSX.Element {
         if (spotifyRefreshToken)
           response = await spotifyAuthCall({
             refresh_token: spotifyRefreshToken,
-            grant_type: "refresh_token",
+            grant_type: 'refresh_token',
           });
         else
           response = await spotifyAuthCall({
             code,
-            grant_type: "authorization_code",
+            grant_type: 'authorization_code',
           });
 
         if (response.access_token) {
@@ -50,12 +50,12 @@ export default function Home(): JSX.Element {
           setSpotifyTokenResponse(response);
           setIsAuthenticated(true);
 
-          history.replace("/app/search/songs");
+          history.replace('/app/search/songs');
         } else {
-          throw new Error("Usuario no fue logeado");
+          throw new Error('Usuario no fue logeado');
         }
       } catch (error) {
-        alert("Usuario no fue logeado");
+        alert('Usuario no fue logeado');
         setSpotifyTokenResponse(null);
         setSpotifyRefreshToken(null);
         setIsAuthenticated(false);
@@ -71,7 +71,7 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
-    const spotifyCode = urlParams.get("code");
+    const spotifyCode = urlParams.get('code');
 
     if (spotifyCode || isAuthenticated) authenticateUser(spotifyCode);
   }, [location.search]);
