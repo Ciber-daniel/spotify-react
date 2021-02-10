@@ -1,7 +1,7 @@
 import apiCall from "../api";
 
 const commonParams = {
-  redirect_uri: process.env.REACT_APP_SPOTIFY_CALLBACK_HOST,
+  redirect_uri: "https://spotify-react-challenge.herokuapp.com/",
   client_id: process.env.REACT_APP_SPOTIFY_CLIENT_ID,
   client_secret: process.env.REACT_APP_SPOTIFY_SECRET_ID,
 };
