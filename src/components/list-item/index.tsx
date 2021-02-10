@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { useHistory } from 'react-router-dom';
+import { memo } from "react";
+import { useHistory } from "react-router-dom";
 // styles
-import '../../styles/list-item.css';
+import "../../styles/list-item.css";
 
 export default memo(function ListItem({
   imageUrl,
@@ -9,18 +9,23 @@ export default memo(function ListItem({
   releaseDate,
   name,
   artist,
+  externalUrl,
 }: any) {
   const history = useHistory();
 
   const handleListItemClick = () => {
-    history.push(`/app/detail/${id}`, '_blank');
+    history.push(`/app/detail/${id}`, "_blank");
+  };
+
+  const handleClickExternal = () => {
+    window.open(externalUrl, "_blank");
   };
 
   return (
     <div className="col-md-3 p-4 container-fluid">
       <div
         className="list-item card card-body"
-        onClick={handleListItemClick}
+        onClick={handleClickExternal}
         id={id}
       >
         <img

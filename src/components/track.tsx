@@ -7,12 +7,13 @@ export default memo(function Track({
   name,
   artists,
   imageUrl,
+  external_urls,
 }: any) {
   return (
     <ListItem
       imageUrl={album?.images[0].url}
       id={id}
-      // externalUrl={external_urls?.spotify}
+      externalUrl={external_urls?.spotify}
       releaseDate={album?.release_date}
       name={name}
       artist={artists[0].name}
