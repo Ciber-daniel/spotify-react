@@ -9,7 +9,6 @@ export default memo(function ListItem({
   releaseDate,
   name,
   artist,
-  externalUrl,
 }: any) {
   const history = useHistory();
 
@@ -17,17 +16,9 @@ export default memo(function ListItem({
     history.push(`/app/detail/${id}`, "_blank");
   };
 
-  const handleClickExternal = () => {
-    window.open(externalUrl, "_blank");
-  };
-
   return (
-    <div className="col-md-3 p-4 container-fluid">
-      <div
-        className="list-item card card-body"
-        onClick={handleClickExternal}
-        id={id}
-      >
+    <div className="col-md-3 p-4 container-fluid" onClick={handleListItemClick}>
+      <div className="list-item card card-body" id={id}>
         <img
           className="list-img d-flex justify-content-between"
           src={imageUrl}
